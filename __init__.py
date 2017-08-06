@@ -10,7 +10,6 @@ current_led = 0
 direction = 1
 larson_fade = 0.3
 larson_brightness = 0.1
-larson_settings_string = ""
 leds = [0, 0, 0, 0, 0, 0]
 try:
     name = badge.nvs_get_str('owner', 'name', 'Hacker1337')
@@ -37,7 +36,6 @@ def larson_brightness_inc(inc):
     new_value = round(larson_brightness + inc, 2)
     if 0 < new_value < 1:
         larson_brightness = new_value
-    display_settings()
 
 
 def larson_brightness_up(pressed):
@@ -55,7 +53,6 @@ def larson_fade_inc(inc):
     new_value = round(larson_fade + inc, 2)
     if new_value > 0 and new_value < 1:
         larson_fade = new_value
-    display_settings()
 
 
 def larson_fade_more(pressed):
@@ -72,7 +69,6 @@ def larson_mode_change(inc):
     global current_mode
     global larson_modes
     current_mode = int(current_mode + inc) % len(larson_modes)
-    display_settings()
 
 
 def larson_mode_next(pressed):
@@ -87,15 +83,6 @@ def larson_mode_prev(pressed):
 
 def noop(pressed):
     pass
-
-
-def display_settings():
-    global larson_settings_string
-    ugfx.string(2, 2, larson_settings_string,"Roboto_Regular10",ugfx.WHITE)
-    ugfx.flush()
-    larson_settings_string = "mode={:d}/brightness={:0.2f}/tail={:0.2f}".format(current_mode, larson_brightness, 1-larson_fade);
-    ugfx.string(2, 2, larson_settings_string,"Roboto_Regular10",ugfx.BLACK)
-    ugfx.flush()
 
 
 badge.init()
@@ -128,8 +115,8 @@ try:
     badge.eink_png(0,40,'/lib/sha2017_colors/shrug.png')
 except:
     ugfx.string(100,50,"Error loading shrug.png","Roboto_Regular12",ugfx.BLACK)
+
 ugfx.flush()
-display_settings()
 
 while True:
     for x in range(0, 6):
@@ -141,4 +128,5 @@ while True:
     badge.leds_send_data(binascii.unhexlify(led_colors), 24)
     current_led = current_led + direction
     direction = -direction if current_led in (0, 5) else direction
+    #    ugfx.flush()
     time.sleep(0.1)
