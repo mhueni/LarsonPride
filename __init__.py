@@ -4,7 +4,7 @@ try:
 except ImportError:
     print("running on emulator?")
 
-LARSON_VERSION = 28
+LARSON_VERSION = "v28"
 LARSON_FADE_STEPS = 0.05
 larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
 pride_colors = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")
@@ -14,14 +14,17 @@ direction = 1
 larson_fade = 0.3
 leds = [0, 0, 0, 0, 0, 0]
 
+
 def set_brightness(value):
     values = bytes([0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value])
     badge.leds_send_data(values)
+
 
 def home(pushed):
     if(pushed):
         print("go home")
         appglue.home()
+
 
 def larson(led_pos, val):
     global current_mode, larson_modes
@@ -94,7 +97,7 @@ ugfx.line(170, 72, 184 + length, 72, ugfx.BLACK)
 ugfx.line(180 + length, 52, 180 + length, 70, ugfx.BLACK)
 ugfx.string(180,75,"Anyway","Roboto_BlackItalic24",ugfx.BLACK)
 ugfx.string(20, 110, "UP: brighter, DOWN: darker, L/R: switch mode","Roboto_Regular12",ugfx.BLACK)
-ugfx.string(275, 115, "v" + LARSON_VERSION,"Roboto_Regular12",ugfx.BLACK)
+ugfx.string(275, 115, LARSON_VERSION,"Roboto_Regular12",ugfx.BLACK)
 try:
     badge.eink_png(0,40,'/lib/sha2017_colors/shrug.png')
 except:
