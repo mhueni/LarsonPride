@@ -1,6 +1,6 @@
 import ugfx, badge, binascii, time, appglue
 
-LARSON_VERSION = "v4.3"
+LARSON_VERSION = "v4.4"
 LARSON_FADE_STEPS = 0.05
 LARSON_BRIGHTNESS_STEPS = 0.02
 larson_modes = ('pride', 'ff0000', '00ff00', '0000ff', 'ffffff')
@@ -95,7 +95,7 @@ ugfx.input_attach(ugfx.JOY_LEFT, larson_fade_less)
 ugfx.input_attach(ugfx.JOY_RIGHT, larson_fade_more)
 ugfx.input_attach(ugfx.BTN_A, larson_mode_next)
 ugfx.input_attach(ugfx.BTN_B, larson_mode_prev)
-ugfx.input_attach(ugfx.BTN_START, noop)
+ugfx.input_attach(ugfx.BTN_START, home)
 ugfx.input_attach(ugfx.BTN_SELECT, home)
 
 ugfx.clear(ugfx.BLACK)
