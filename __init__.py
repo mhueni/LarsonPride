@@ -2,6 +2,7 @@ import badge
 import binascii
 import time
 import ugfx
+import hashlib
 
 LARSON_FADE_STEPS = 0.05
 larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
@@ -12,6 +13,10 @@ direction = 1
 larson_fade = 0.3
 leds = [0, 0, 0, 0, 0, 0]
 
+def home(pushed):
+    if(pushed):
+        print("go home")
+        appglue.home()
 
 def larson(led_pos, val):
     global current_mode, larson_modes
@@ -24,7 +29,7 @@ def larson(led_pos, val):
 
 def larson_fade_inc(inc):
     global larson_fade
-    new_value = round(larson_fade + inc, 1)
+    new_value = round(larson_fade + inc, 2)
     if new_value > 0 and new_value < 1:
         larson_fade = new_value
 
@@ -69,7 +74,7 @@ ugfx.input_attach(ugfx.JOY_RIGHT, larson_mode_prev)
 ugfx.input_attach(ugfx.BTN_A, noop)
 ugfx.input_attach(ugfx.BTN_B, noop)
 ugfx.input_attach(ugfx.BTN_START, noop)
-ugfx.input_attach(ugfx.BTN_SELECT, lambda pressed: appglue.start_app(""))
+ugfx.input_attach(ugfx.BTN_SELECT, home)
 ugfx.clear(ugfx.WHITE)
 ugfx.flush()
 ugfx.string(190,25,"STILL","Roboto_BlackItalic24",ugfx.BLACK)
