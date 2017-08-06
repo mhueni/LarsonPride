@@ -70,8 +70,19 @@ ugfx.input_attach(ugfx.BTN_START, noop)
 ugfx.input_attach(ugfx.BTN_SELECT, lambda pressed: appglue.start_app(""))
 ugfx.clear(ugfx.WHITE)
 ugfx.flush()
-ugfx.clear(ugfx.BLACK)
-ugfx.string(10, 10, 'F**K YOU GANDALF', "PermanentMarker22", ugfx.WHITE)
+ugfx.string(190,25,"STILL","Roboto_BlackItalic24",ugfx.BLACK)
+ugfx.string(170,50,"Proud","PermanentMarker22",ugfx.BLACK)
+length = ugfx.get_string_width("Proud","PermanentMarker22")
+ugfx.line(170, 72, 184 + length, 72, ugfx.BLACK)
+ugfx.line(180 + length, 52, 180 + length, 70, ugfx.BLACK)
+ugfx.string(180,75,"Anyway","Roboto_BlackItalic24",ugfx.BLACK)
+ugfx.string(20, 110, "UP: brighter, DOWN: darker, L/R: switch mode","Roboto_Regular12",ugfx.BLACK)
+ugfx.string(275, 115, "v24","Roboto_Regular12",ugfx.BLACK)
+try:
+    badge.eink_png(0,40,'/lib/sha2017_colors/shrug.png')
+except:
+    ugfx.string(100,50,"Error loading shrug.png"),ugfx.BLACK
+
 ugfx.flush()
 
 while True:
