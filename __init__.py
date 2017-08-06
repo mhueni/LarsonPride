@@ -15,11 +15,6 @@ larson_fade = 0.3
 leds = [0, 0, 0, 0, 0, 0]
 
 
-def set_brightness(value):
-    values = bytes([0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value])
-    badge.leds_send_data(values)
-
-
 def home(pushed):
     if(pushed):
         print("go home")
