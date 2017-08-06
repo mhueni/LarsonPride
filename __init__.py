@@ -1,6 +1,6 @@
 import ugfx, badge, binascii, time, appglue
 
-LARSON_VERSION = "v40.1"
+LARSON_VERSION = "v4.3"
 LARSON_FADE_STEPS = 0.05
 LARSON_BRIGHTNESS_STEPS = 0.02
 larson_modes = ('pride', 'ff0000', '00ff00', '0000ff', 'ffffff')
@@ -12,7 +12,7 @@ larson_fade = 0.6
 larson_brightness = 0.1
 leds = [0, 0, 0, 0, 0, 0]
 try:
-    name = badge.nvs_get_str('owner', 'name', 'Hacker1337')
+    name = badge.nvs_get_str('owner', 'name', 'Christopher')
 except:
     name = "Emulator"
 
@@ -110,7 +110,7 @@ ugfx.line(170, 72, 184 + length, 72, ugfx.BLACK)
 ugfx.line(180 + length, 52, 180 + length, 70, ugfx.BLACK)
 ugfx.string(180,75,"Anyway","Roboto_BlackItalic24",ugfx.BLACK)
 ugfx.string(20, 110, "A/B: mode, UP/DOWN: brightness, L/R: +/- tail","Roboto_Regular12",ugfx.BLACK)
-ugfx.string(275, 115, LARSON_VERSION,"Roboto_Regular12",ugfx.BLACK)
+ugfx.string(270, 117, LARSON_VERSION,"Roboto_Regular10",ugfx.BLACK)
 try:
     badge.eink_png(0,40,'/lib/sha2017_colors/shrug.png')
 except:
