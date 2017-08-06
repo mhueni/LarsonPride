@@ -1,4 +1,5 @@
-import badge, binascii, time, ugfx, appglue
+import ugfx, badge, binascii, time
+import appglue
 
 LARSON_FADE_STEPS = 0.05
 larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
