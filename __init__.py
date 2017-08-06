@@ -1,6 +1,6 @@
 import ugfx, badge, binascii, time, appglue
 
-LARSON_VERSION = "v33"
+LARSON_VERSION = "v34"
 LARSON_FADE_STEPS = 0.05
 LARSON_BRIGHTNESS_STEPS = 0.1
 larson_modes = ('pride', 'ff0000', '00ff00', '0000ff', 'ffffff')
