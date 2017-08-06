@@ -8,7 +8,7 @@ pride_colors = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")
 current_mode = 0
 current_led = 0
 direction = 1
-larson_fade = 0.3
+larson_fade = 0.6
 larson_brightness = 0.1
 leds = [0, 0, 0, 0, 0, 0]
 try:
@@ -51,18 +51,18 @@ def larson_brightness_down(pressed):
 def larson_fade_inc(inc):
     global larson_fade
     new_value = round(larson_fade + inc, 2)
-    if new_value > 0 and new_value < 1:
+    if 0 < new_value < 1:
         larson_fade = new_value
 
 
 def larson_fade_more(pressed):
     if pressed:
-        larson_fade_inc(-LARSON_FADE_STEPS)
+        larson_fade_inc(LARSON_FADE_STEPS)
 
 
 def larson_fade_less(pressed):
     if pressed:
-        larson_fade_inc(LARSON_FADE_STEPS)
+        larson_fade_inc(-LARSON_FADE_STEPS)
 
 
 def larson_mode_change(inc):
@@ -120,7 +120,8 @@ ugfx.flush()
 
 while True:
     for x in range(0, 6):
-        leds[x] = round(leds[x] - larson_fade, 1) if leds[x] > larson_fade else 0.0
+#        leds[x] = round(leds[x] - larson_fade, 1) if leds[x] > larson_fade else 0.0
+        leds[x] = round(leds[x] * larson_fade, 2) if leds[x] > 0 else 0.0
     leds[current_led] = 1.0
     #    print(larson_seq)
     led_colors = ''.join(
