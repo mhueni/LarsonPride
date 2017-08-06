@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 import badge
 import binascii
 import time
 import ugfx
 import hashlib
+=======
+import ugfx, badge, binascii, time
+import appglue
+>>>>>>> ui_dev
 
 LARSON_FADE_STEPS = 0.05
 larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
@@ -13,14 +18,42 @@ direction = 1
 larson_fade = 0.3
 leds = [0, 0, 0, 0, 0, 0]
 
+def set_brightness(value):
+    values = bytes([0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value])
+    badge.leds_send_data(values)
+
 def home(pushed):
     if(pushed):
         print("go home")
         appglue.home()
 
+<<<<<<< HEAD
 def larson(led_pos, val):
     global current_mode, larson_modes
     color = larson_modes[current_mode]
+=======
+def low(pushed):
+    global brightness
+    if(pushed):
+        print("sending low")
+        badge.leds_enable()
+        brightness -= 10
+        brightness %= 255
+        set_brightness(brightness)
+
+def high(pushed):
+    global brightness
+    if(pushed):
+        print("sending high")
+        badge.leds_enable()
+        brightness += 10
+        brightness %= 255
+        set_brightness(brightness)
+
+def larson(idx, val):
+    global larson_mode, larson_modes
+    color = larson_modes[larson_mode]
+>>>>>>> ui_dev
     if (color == 'pride'):
         color = pride_colors[led_pos]
     led_colors = [int(val * x) for (x) in binascii.unhexlify(color + '00')]
@@ -59,12 +92,13 @@ def larson_mode_prev(pressed):
     if pressed:
         larson_mode_change(-1)
 
-
 def noop(pressed):
     pass
 
+brightness = 100
 
 badge.init()
+badge.leds_init()
 ugfx.init()
 ugfx.input_init()
 ugfx.input_attach(ugfx.JOY_UP, larson_fade_more)
@@ -75,8 +109,12 @@ ugfx.input_attach(ugfx.BTN_A, noop)
 ugfx.input_attach(ugfx.BTN_B, noop)
 ugfx.input_attach(ugfx.BTN_START, noop)
 ugfx.input_attach(ugfx.BTN_SELECT, home)
+
+ugfx.clear(ugfx.BLACK)
+ugfx.flush()
 ugfx.clear(ugfx.WHITE)
 ugfx.flush()
+
 ugfx.string(190,25,"STILL","Roboto_BlackItalic24",ugfx.BLACK)
 ugfx.string(170,50,"Proud","PermanentMarker22",ugfx.BLACK)
 length = ugfx.get_string_width("Proud","PermanentMarker22")
