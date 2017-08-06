@@ -1,6 +1,6 @@
 import ugfx, badge, binascii, time, appglue
 
-LARSON_VERSION = "v36"
+LARSON_VERSION = "v40"
 LARSON_FADE_STEPS = 0.05
 LARSON_BRIGHTNESS_STEPS = 0.02
 larson_modes = ('pride', 'ff0000', '00ff00', '0000ff', 'ffffff')
@@ -57,12 +57,12 @@ def larson_fade_inc(inc):
 
 def larson_fade_more(pressed):
     if pressed:
-        larson_fade_inc(LARSON_FADE_STEPS)
+        larson_fade_inc(-LARSON_FADE_STEPS)
 
 
 def larson_fade_less(pressed):
     if pressed:
-        larson_fade_inc(-LARSON_FADE_STEPS)
+        larson_fade_inc(LARSON_FADE_STEPS)
 
 
 def larson_mode_change(inc):
