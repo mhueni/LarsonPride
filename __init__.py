@@ -3,6 +3,7 @@ import binascii
 import time
 import ugfx
 
+LARSON_FADE_STEPS = 0.05
 larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
 larson_mode = 0
 larson_n = 0
@@ -29,12 +30,12 @@ def larson_fade_inc(inc):
 
 def larson_fade_more(pressed):
     if pressed:
-        larson_fade_inc(0.1)
+        larson_fade_inc(LARSON_FADE_STEPS)
 
 
 def larson_fade_less(pressed):
     if pressed:
-        larson_fade_inc(-0.1)
+        larson_fade_inc(-LARSON_FADE_STEPS)
 
 
 def larson_mode_change(inc):
@@ -71,7 +72,7 @@ ugfx.input_attach(ugfx.BTN_SELECT, lambda pressed: appglue.start_app(""))
 ugfx.clear(ugfx.WHITE)
 ugfx.flush()
 ugfx.clear(ugfx.BLACK)
-ugfx.string(10, 10, 'F**K YOU GANDALF', "PermanentMarker22", ugfx.WHITE)
+ugfx.string(10, 10, "Larson Pride", "PermanentMarker22", ugfx.WHITE)
 ugfx.flush()
 
 while True:
