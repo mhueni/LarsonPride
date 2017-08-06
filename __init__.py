@@ -12,48 +12,52 @@ larson_seq = [ 0, 0, 0, 0, 0, 0 ]
 
 def larson(idx,val):
     global larson_mode,larson_modes
-    color = list(larson_pride(idx,val) if larson_modes[larson_mode] == 'pride' else larson_color(larson_modes[larson_mode],val))
-    return (color[1], color[0], color[2], color[3])
+    color = larson_modes[larson_mode]
+    if (color == 'pride'):
+        color = ("750787","004dff","008026","ffed00","ff8c00","e40303")[idx]
+    led_colors = list(int(val * x) for (x) in binascii.unhexlify(color + '00'))
+    return (led_colors[1], led_colors[0], led_colors[2], led_colors[3])
 
-def larson_color(color,val):
-    return list(int(val * x) for (x) in binascii.unhexlify(color + '00'))
-
-def larson_pride(idx,val):
-    return [
-        list(int(val * x) for (x) in binascii.unhexlify("75078710")),
-        list(int(val * x) for (x) in binascii.unhexlify("004dff10")),
-        list(int(val * x) for (x) in binascii.unhexlify("00802610")),
-        list(int(val * x) for (x) in binascii.unhexlify("ffed0010")),
-        list(int(val * x) for (x) in binascii.unhexlify("ff8c0010")),
-        list(int(val * x) for (x) in binascii.unhexlify("e4030310")),
-    ][idx]
-
-def larson_fade_inc(pressed, inc):
+def larson_fade_inc(inc):
     global larson_fade
-    if pressed:
-        new_value = larson_fade + inc
-        if new_value > 0 and new_value < 1:
-            larson_fade = new_value
+    new_value = round(larson_fade + inc, 1)
+    if new_value > 0 and new_value < 1:
+        larson_fade = new_value
 
-def larson_mode_change(pressed, inc):
+def larson_fade_more(pressed):
+    if pressed:
+        larson_fade_inc(0.1)
+
+def larson_fade_less(pressed):
+    if pressed:
+        larson_fade_inc(-0.1)
+
+def larson_mode_change(inc):
     global larson_mode
     global larson_modes
-    if pressed:
-        larson_mode = int(larson_mode + inc) % len(larson_modes)
+    larson_mode = int(larson_mode + inc) % len(larson_modes)
 
-def noop():
+def larson_mode_next(pressed):
+    if pressed:
+        larson_mode_change(1)
+
+def larson_mode_prev(pressed):
+    if pressed:
+        larson_mode_change(-1)
+
+def noop(pressed):
     pass
 
 badge.init()
 ugfx.init()
 ugfx.input_init()
-ugfx.input_attach(ugfx.JOY_UP, lambda pressed: larson_fade_inc(pressed, -0.1))
-ugfx.input_attach(ugfx.JOY_DOWN, lambda pressed: larson_fade_inc(pressed, 0.1))
-ugfx.input_attach(ugfx.JOY_LEFT, lambda pressed: larson_mode_change(pressed, 1))
-ugfx.input_attach(ugfx.JOY_RIGHT, lambda pressed: larson_mode_change(pressed, -1))
-ugfx.input_attach(ugfx.BTN_A, lambda pressed: noop())
-ugfx.input_attach(ugfx.BTN_B, lambda pressed: noop())
-ugfx.input_attach(ugfx.BTN_START, lambda pressed: noop())
+ugfx.input_attach(ugfx.JOY_UP, larson_fade_more)
+ugfx.input_attach(ugfx.JOY_DOWN, larson_fade_less)
+ugfx.input_attach(ugfx.JOY_LEFT, larson_mode_next)
+ugfx.input_attach(ugfx.JOY_RIGHT, larson_mode_prev)
+ugfx.input_attach(ugfx.BTN_A, noop)
+ugfx.input_attach(ugfx.BTN_B, noop)
+ugfx.input_attach(ugfx.BTN_START, noop)
 ugfx.input_attach(ugfx.BTN_SELECT, lambda pressed: appglue.start_app(""))
 ugfx.clear(ugfx.WHITE)
 ugfx.flush()
