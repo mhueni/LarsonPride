@@ -22,7 +22,7 @@ colors = {'user': LarsonScanner.LarsonScanner.user_colors(name),
           'blue': ('0000FF', '0000FF', '0000FF', '0000FF', '0000FF', '0000FF'),
           'pride': LarsonScanner.LarsonScanner.pride_colors}
 color_maps = list(colors.keys())
-print(colors)
+
 
 def home(pushed):
     if(pushed):
@@ -52,10 +52,8 @@ def larson_mode_prev(pressed):
     global current_color_map
     if pressed:
         current_color_map -= 1
-        print(current_color_map)
         if current_color_map < 0:
             current_color_map = len(color_maps)-1
-        print(current_color_map)
         scanner.colors = colors[color_maps[current_color_map]]
 
 
