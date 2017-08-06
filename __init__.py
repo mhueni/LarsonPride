@@ -57,12 +57,12 @@ def larson_fade_inc(inc):
 
 def larson_fade_more(pressed):
     if pressed:
-        larson_fade_inc(LARSON_FADE_STEPS)
+        larson_fade_inc(-LARSON_FADE_STEPS)
 
 
 def larson_fade_less(pressed):
     if pressed:
-        larson_fade_inc(-LARSON_FADE_STEPS)
+        larson_fade_inc(LARSON_FADE_STEPS)
 
 
 def larson_mode_change(inc):
