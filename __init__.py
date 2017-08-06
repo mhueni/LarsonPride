@@ -36,6 +36,7 @@ def larson_brightness_inc(inc):
     new_value = round(larson_brightness + inc, 2)
     if 0 < new_value < 1:
         larson_brightness = new_value
+    print_settings()
 
 
 def larson_brightness_up(pressed):
@@ -53,6 +54,7 @@ def larson_fade_inc(inc):
     new_value = round(larson_fade + inc, 2)
     if 0 < new_value < 1:
         larson_fade = new_value
+    print_settings()
 
 
 def larson_fade_more(pressed):
@@ -66,9 +68,9 @@ def larson_fade_less(pressed):
 
 
 def larson_mode_change(inc):
-    global current_mode
-    global larson_modes
+    global current_mode, larson_modes
     current_mode = int(current_mode + inc) % len(larson_modes)
+    print_settings()
 
 
 def larson_mode_next(pressed):
@@ -83,6 +85,11 @@ def larson_mode_prev(pressed):
 
 def noop(pressed):
     pass
+
+
+def print_settings():
+    global current_mode, larson_brightness, larson_fade
+    print("mode={:d}/brightness={:0.2f}/fade={:0.2f}".format(current_mode, larson_brightness, larson_fade))
 
 
 badge.init()
