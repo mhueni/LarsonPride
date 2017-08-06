@@ -18,7 +18,8 @@ colors = {'user': LarsonScanner.LarsonScanner.user_colors(name),
           'green': ('00FF00', '00FF00', '00FF00', '00FF00', '00FF00', '00FF00'),
           'blue': ('0000FF', '0000FF', '0000FF', '0000FF', '0000FF', '0000FF'),
           'pride': LarsonScanner.LarsonScanner.pride_colors}
-color_maps = colors.keys()
+color_maps = list(colors.keys())
+print(colors)
 
 def home(pushed):
     if(pushed):

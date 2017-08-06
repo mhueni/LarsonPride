@@ -6,7 +6,7 @@ class LarsonScanner:
     def __init__(self, colors=pride_colors):
         self.colors = colors
         self.direction = -1
-        self.brightness = 0.1
+        self.brightness = 1.0
         self.current_led = 5        # use 5 if direction is -1, and 0 if direction is 1!
         self.decay = 0.8
         self.speed = 0.1        # duration for sleeps in seconds, as for time.sleep()
@@ -65,7 +65,7 @@ class LarsonScanner:
     def user_colors(name):
         name_digest = binascii.hexlify(hashlib.sha256(name).digest())
         name_colors = (name_digest[0:6], name_digest[6:12], name_digest[12:18], name_digest[18:24], name_digest[24:30], name_digest[30:36])
-        return list(c.decode for c in name_colors)
+        return list(c.decode() for c in name_colors)
 
     def wait(self):
         time.sleep(self.speed)
