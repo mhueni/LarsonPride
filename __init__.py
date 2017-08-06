@@ -1,14 +1,10 @@
-<<<<<<< HEAD
-import badge
-import binascii
-import time
-import ugfx
-import hashlib
-=======
 import ugfx, badge, binascii, time
-import appglue
->>>>>>> ui_dev
+try:
+    import appglue
+except ImportError:
+    print("running on emulator?")
 
+LARSON_VERSION = 28
 LARSON_FADE_STEPS = 0.05
 larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
 pride_colors = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")
@@ -27,33 +23,9 @@ def home(pushed):
         print("go home")
         appglue.home()
 
-<<<<<<< HEAD
 def larson(led_pos, val):
     global current_mode, larson_modes
     color = larson_modes[current_mode]
-=======
-def low(pushed):
-    global brightness
-    if(pushed):
-        print("sending low")
-        badge.leds_enable()
-        brightness -= 10
-        brightness %= 255
-        set_brightness(brightness)
-
-def high(pushed):
-    global brightness
-    if(pushed):
-        print("sending high")
-        badge.leds_enable()
-        brightness += 10
-        brightness %= 255
-        set_brightness(brightness)
-
-def larson(idx, val):
-    global larson_mode, larson_modes
-    color = larson_modes[larson_mode]
->>>>>>> ui_dev
     if (color == 'pride'):
         color = pride_colors[led_pos]
     led_colors = [int(val * x) for (x) in binascii.unhexlify(color + '00')]
@@ -122,7 +94,7 @@ ugfx.line(170, 72, 184 + length, 72, ugfx.BLACK)
 ugfx.line(180 + length, 52, 180 + length, 70, ugfx.BLACK)
 ugfx.string(180,75,"Anyway","Roboto_BlackItalic24",ugfx.BLACK)
 ugfx.string(20, 110, "UP: brighter, DOWN: darker, L/R: switch mode","Roboto_Regular12",ugfx.BLACK)
-ugfx.string(275, 115, "v26","Roboto_Regular12",ugfx.BLACK)
+ugfx.string(275, 115, "v" + LARSON_VERSION,"Roboto_Regular12",ugfx.BLACK)
 try:
     badge.eink_png(0,40,'/lib/sha2017_colors/shrug.png')
 except:
