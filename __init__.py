@@ -82,7 +82,7 @@ ugfx.line(170, 72, 184 + length, 72, ugfx.BLACK)
 ugfx.line(180 + length, 52, 180 + length, 70, ugfx.BLACK)
 ugfx.string(180,75,"Anyway","Roboto_BlackItalic24",ugfx.BLACK)
 ugfx.string(20, 110, "UP: brighter, DOWN: darker, L/R: switch mode","Roboto_Regular12",ugfx.BLACK)
-ugfx.string(275, 115, "v24","Roboto_Regular12",ugfx.BLACK)
+ugfx.string(275, 115, "v26","Roboto_Regular12",ugfx.BLACK)
 try:
     badge.eink_png(0,40,'/lib/sha2017_colors/shrug.png')
 except:
