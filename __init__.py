@@ -10,6 +10,10 @@ larson_i = 1
 larson_fade = 0.3
 larson_seq = [0, 0, 0, 0, 0, 0]
 
+def home(pushed):
+    if(pushed):
+        print("go home")
+        appglue.home()
 
 def larson(idx, val):
     global larson_mode, larson_modes
@@ -67,7 +71,7 @@ ugfx.input_attach(ugfx.JOY_RIGHT, larson_mode_prev)
 ugfx.input_attach(ugfx.BTN_A, noop)
 ugfx.input_attach(ugfx.BTN_B, noop)
 ugfx.input_attach(ugfx.BTN_START, noop)
-ugfx.input_attach(ugfx.BTN_SELECT, lambda pressed: appglue.start_app(""))
+ugfx.input_attach(ugfx.BTN_SELECT, home)
 ugfx.clear(ugfx.WHITE)
 ugfx.flush()
 ugfx.string(190,25,"STILL","Roboto_BlackItalic24",ugfx.BLACK)
