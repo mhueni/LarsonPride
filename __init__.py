@@ -82,7 +82,7 @@ ugfx.string(275, 115, "v24","Roboto_Regular12",ugfx.BLACK)
 try:
     badge.eink_png(0,40,'/lib/sha2017_colors/shrug.png')
 except:
-    ugfx.string(100,50,"Error loading shrug.png","Roboto_Regular12",ugfx.BLACK)
+    ugfx.string(100,50,"Error loading shrug.png","Roboto§_Regular12",ugfx.BLACK)
 ugfx.flush()
 
 while True:
