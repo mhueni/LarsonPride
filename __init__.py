@@ -1,15 +1,15 @@
 import ugfx, badge, binascii, time, appglue
 
-LARSON_VERSION = "v34"
+LARSON_VERSION = "v36"
 LARSON_FADE_STEPS = 0.05
-LARSON_BRIGHTNESS_STEPS = 0.1
+LARSON_BRIGHTNESS_STEPS = 0.05
 larson_modes = ('pride', 'ff0000', '00ff00', '0000ff', 'ffffff')
 pride_colors = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")
 current_mode = 0
 current_led = 0
 direction = 1
 larson_fade = 0.3
-larson_brightness = 0.5
+larson_brightness = 0.3
 leds = [0, 0, 0, 0, 0, 0]
 try:
     name = badge.nvs_get_str('owner', 'name', 'Hacker1337')
