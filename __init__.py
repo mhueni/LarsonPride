@@ -13,11 +13,12 @@ except:
 
 # colors as RGB in hex
 current_color_map = 0
-color_maps = ['pride', 'red', 'green', 'blue']
-colors = {'red': ("FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000"),
+colors = {'user': LarsonScanner.LarsonScanner.user_colors(name),
+          'red': ("FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000"),
           'green': ('00FF00', '00FF00', '00FF00', '00FF00', '00FF00', '00FF00'),
           'blue': ('0000FF', '0000FF', '0000FF', '0000FF', '0000FF', '0000FF'),
           'pride': LarsonScanner.LarsonScanner.pride_colors}
+color_maps = colors.keys()
 
 def home(pushed):
     if(pushed):
@@ -52,7 +53,7 @@ def larson_mode_prev(pressed):
             current_color_map = len(color_maps)-1
         print(current_color_map)
         scanner.colors = colors[color_maps[current_color_map]]
-        
+
 
 def inc_decay(pressed):
     scanner.change_decay(LARSON_FADE_STEPS)
