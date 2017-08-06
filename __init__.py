@@ -1,7 +1,4 @@
-import badge
-import binascii
-import time
-import ugfx
+import badge, binascii, time, ugfx, appglue
 
 LARSON_FADE_STEPS = 0.05
 larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
@@ -11,10 +8,32 @@ larson_i = 1
 larson_fade = 0.3
 larson_seq = [0, 0, 0, 0, 0, 0]
 
+def set_brightness(value):
+    values = bytes([0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value, 0, 0, 0, value])
+    badge.leds_send_data(values)
+
 def home(pushed):
     if(pushed):
         print("go home")
         appglue.home()
+
+def low(pushed):
+    global brightness
+    if(pushed):
+        print("sending low")
+        badge.leds_enable()
+        brightness -= 10
+        brightness %= 255
+        set_brightness(brightness)
+
+def high(pushed):
+    global brightness
+    if(pushed):
+        print("sending high")
+        badge.leds_enable()
+        brightness += 10
+        brightness %= 255
+        set_brightness(brightness)
 
 def larson(idx, val):
     global larson_mode, larson_modes
@@ -57,12 +76,13 @@ def larson_mode_prev(pressed):
     if pressed:
         larson_mode_change(-1)
 
-
 def noop(pressed):
     pass
 
+brightness = 100
 
 badge.init()
+badge.leds_init()
 ugfx.init()
 ugfx.input_init()
 ugfx.input_attach(ugfx.JOY_UP, larson_fade_more)
@@ -73,8 +93,12 @@ ugfx.input_attach(ugfx.BTN_A, noop)
 ugfx.input_attach(ugfx.BTN_B, noop)
 ugfx.input_attach(ugfx.BTN_START, noop)
 ugfx.input_attach(ugfx.BTN_SELECT, home)
+
+ugfx.clear(ugfx.BLACK)
+ugfx.flush()
 ugfx.clear(ugfx.WHITE)
 ugfx.flush()
+
 ugfx.string(190,25,"STILL","Roboto_BlackItalic24",ugfx.BLACK)
 ugfx.string(170,50,"Proud","PermanentMarker22",ugfx.BLACK)
 length = ugfx.get_string_width("Proud","PermanentMarker22")
