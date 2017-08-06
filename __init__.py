@@ -2,12 +2,14 @@ import ugfx, badge, binascii, time, appglue
 
 LARSON_VERSION = "v33"
 LARSON_FADE_STEPS = 0.05
-larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
+LARSON_BRIGHTNESS_STEPS = 0.1
+larson_modes = ('pride', 'ff0000', '00ff00', '0000ff', 'ffffff')
 pride_colors = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")
 current_mode = 0
 current_led = 0
 direction = 1
 larson_fade = 0.3
+larson_brightness = 1
 leds = [0, 0, 0, 0, 0, 0]
 try:
     name = badge.nvs_get_str('owner', 'name', 'Hacker1337')
@@ -25,8 +27,25 @@ def larson(led_pos, val):
     color = larson_modes[current_mode]
     if (color == 'pride'):
         color = pride_colors[led_pos]
-    led_colors = [int(val * x) for (x) in binascii.unhexlify(color + '00')]
+    led_colors = [int(val * larson_brightness * x) for (x) in binascii.unhexlify(color + '00')]
     return (led_colors[1], led_colors[0], led_colors[2], led_colors[3])
+
+
+def larson_brightness_inc(inc):
+    global larson_brightness
+    new_value = round(larson_brightness + inc, 2)
+    if 0 < new_value < 1:
+        larson_brightness = new_value
+
+
+def larson_brightness_up(pressed):
+    if pressed:
+        larson_brightness_inc(LARSON_BRIGHTNESS_STEPS)
+
+
+def larson_brightness_down(pressed):
+    if pressed:
+        larson_brightness_inc(-LARSON_BRIGHTNESS_STEPS)
 
 
 def larson_fade_inc(inc):
@@ -61,21 +80,21 @@ def larson_mode_prev(pressed):
     if pressed:
         larson_mode_change(-1)
 
+
 def noop(pressed):
     pass
 
-brightness = 100
 
 badge.init()
 badge.leds_init()
 ugfx.init()
 ugfx.input_init()
-ugfx.input_attach(ugfx.JOY_UP, larson_fade_more)
-ugfx.input_attach(ugfx.JOY_DOWN, larson_fade_less)
-ugfx.input_attach(ugfx.JOY_LEFT, larson_mode_next)
-ugfx.input_attach(ugfx.JOY_RIGHT, larson_mode_prev)
-ugfx.input_attach(ugfx.BTN_A, noop)
-ugfx.input_attach(ugfx.BTN_B, noop)
+ugfx.input_attach(ugfx.JOY_UP, larson_brightness_up)
+ugfx.input_attach(ugfx.JOY_DOWN, larson_brightness_down)
+ugfx.input_attach(ugfx.JOY_LEFT, larson_fade_less)
+ugfx.input_attach(ugfx.JOY_RIGHT, larson_fade_more)
+ugfx.input_attach(ugfx.BTN_A, larson_mode_next)
+ugfx.input_attach(ugfx.BTN_B, larson_mode_prev)
 ugfx.input_attach(ugfx.BTN_START, noop)
 ugfx.input_attach(ugfx.BTN_SELECT, home)
 
@@ -90,7 +109,7 @@ length = ugfx.get_string_width(name,"PermanentMarker22")
 ugfx.line(170, 72, 184 + length, 72, ugfx.BLACK)
 ugfx.line(180 + length, 52, 180 + length, 70, ugfx.BLACK)
 ugfx.string(180,75,"Anyway","Roboto_BlackItalic24",ugfx.BLACK)
-ugfx.string(20, 110, "UP: brighter, DOWN: darker, L/R: switch mode","Roboto_Regular12",ugfx.BLACK)
+ugfx.string(20, 110, "A/B: switch mode, UP/DOWN: brightness, L/R: +/- tail","Roboto_Regular12",ugfx.BLACK)
 ugfx.string(275, 115, LARSON_VERSION,"Roboto_Regular12",ugfx.BLACK)
 try:
     badge.eink_png(0,40,'/lib/sha2017_colors/shrug.png')
