@@ -2,9 +2,10 @@ import badge
 import binascii
 import time
 import ugfx
+import hashlib
 
 LARSON_FADE_STEPS = 0.05
-larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
+larson_modes = ('nickname', 'ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
 larson_mode = 0
 larson_n = 0
 larson_i = 1
@@ -13,10 +14,14 @@ larson_seq = [0, 0, 0, 0, 0, 0]
 
 
 def larson(idx, val):
-    global larson_mode, larson_modes
+    global badge, larson_mode, larson_modes
     color = larson_modes[larson_mode]
     if (color == 'pride'):
         color = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")[idx]
+    if (color == 'nickname'):
+        nickname = badge.nvs_get_str("owner", "name", "")
+        nickname_colors = list(map(int,hashlib.sha256("mhu3ni").digest()))
+        color = (nickname_colors[0:3], nickname_colors[3:6], nickname_colors[6:9], nickname_colors[9:12])[idx]
     led_colors = list(int(val * x) for (x) in binascii.unhexlify(color + '00'))
     return (led_colors[1], led_colors[0], led_colors[2], led_colors[3])
 
