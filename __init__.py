@@ -14,9 +14,9 @@ try:
 except:
     name = "Emulator"
 
+
 def home(pushed):
     if(pushed):
-        print("go home")
         appglue.home()
 
 
