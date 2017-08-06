@@ -1,6 +1,6 @@
 import ugfx, badge, appglue
 
-import LarsonScanner
+from . import LarsonScanner
 
 LARSON_VERSION = "v4.5"
 LARSON_FADE_STEPS = 0.05
