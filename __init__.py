@@ -1,8 +1,4 @@
-import ugfx, badge, binascii, time
-try:
-    import appglue
-except ImportError:
-    print("running on emulator?")
+import ugfx, badge, binascii, time, appglue
 
 LARSON_VERSION = "v28"
 LARSON_FADE_STEPS = 0.05
