@@ -5,19 +5,19 @@ import ugfx
 
 LARSON_FADE_STEPS = 0.05
 larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
-larson_mode = 0
-larson_n = 0
-larson_i = 1
+current_mode = 0
+current_led = 0
+direction = 1
 larson_fade = 0.3
-larson_seq = [0, 0, 0, 0, 0, 0]
+leds = [0, 0, 0, 0, 0, 0]
 
 
-def larson(idx, val):
-    global larson_mode, larson_modes
-    color = larson_modes[larson_mode]
+def larson(led_pos, val):
+    global current_mode, larson_modes
+    color = larson_modes[current_mode]
     if (color == 'pride'):
-        color = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")[idx]
-    led_colors = list(int(val * x) for (x) in binascii.unhexlify(color + '00'))
+        color = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")[led_pos]
+    led_colors = [int(val * x) for (x) in binascii.unhexlify(color + '00')]
     return (led_colors[1], led_colors[0], led_colors[2], led_colors[3])
 
 
@@ -39,9 +39,9 @@ def larson_fade_less(pressed):
 
 
 def larson_mode_change(inc):
-    global larson_mode
+    global current_mode
     global larson_modes
-    larson_mode = int(larson_mode + inc) % len(larson_modes)
+    current_mode = int(current_mode + inc) % len(larson_modes)
 
 
 def larson_mode_next(pressed):
@@ -88,13 +88,13 @@ ugfx.flush()
 
 while True:
     for x in range(0, 6):
-        larson_seq[x] = round(larson_seq[x] - larson_fade, 1) if larson_seq[x] > larson_fade else 0.0
-    larson_seq[larson_n] = 1.0
+        leds[x] = round(leds[x] - larson_fade, 1) if leds[x] > larson_fade else 0.0
+    leds[current_led] = 1.0
     #    print(larson_seq)
     led_colors = ''.join(
-        [''.join(["{0:02x}".format(int(led)) for led in larson(idx, val)]) for idx, val in enumerate(larson_seq)])
+        [''.join(["{0:02x}".format(int(led)) for led in larson(idx, val)]) for idx, val in enumerate(leds)])
     badge.leds_send_data(binascii.unhexlify(led_colors), 24)
-    larson_n = larson_n + larson_i
-    larson_i = -larson_i if larson_n in (0, 5) else larson_i
+    current_led = current_led + direction
+    direction = -direction if current_led in (0, 5) else direction
     #    ugfx.flush()
     time.sleep(0.1)
