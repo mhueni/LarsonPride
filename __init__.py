@@ -5,6 +5,7 @@ import ugfx
 
 LARSON_FADE_STEPS = 0.05
 larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
+pride_colors = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")
 current_mode = 0
 current_led = 0
 direction = 1
@@ -16,7 +17,7 @@ def larson(led_pos, val):
     global current_mode, larson_modes
     color = larson_modes[current_mode]
     if (color == 'pride'):
-        color = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")[led_pos]
+        color = pride_colors[led_pos]
     led_colors = [int(val * x) for (x) in binascii.unhexlify(color + '00')]
     return (led_colors[1], led_colors[0], led_colors[2], led_colors[3])
 
