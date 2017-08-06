@@ -13,6 +13,7 @@ current_led = 0
 direction = 1
 larson_fade = 0.3
 leds = [0, 0, 0, 0, 0, 0]
+name = badge.nvs_get_str('owner', 'name', 'Hacker1337')
 
 <<<<<<< HEAD
 
