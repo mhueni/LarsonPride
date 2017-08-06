@@ -1,6 +1,6 @@
 import ugfx, badge, binascii, time, appglue
 
-LARSON_VERSION = "v30"
+LARSON_VERSION = "v32"
 LARSON_FADE_STEPS = 0.05
 larson_modes = ('ff0000', '00ff00', '0000ff', 'ffffff', 'pride')
 pride_colors = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")
