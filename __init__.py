@@ -14,7 +14,10 @@ direction = 1
 larson_fade = 0.3
 leds = [0, 0, 0, 0, 0, 0]
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ui_dev
 def home(pushed):
     if(pushed):
         print("go home")
