@@ -3,8 +3,8 @@ import ugfx, badge, appglue
 from . import LarsonScanner
 
 LARSON_VERSION = "v4.5"
-LARSON_FADE_STEPS = 0.05
-LARSON_BRIGHTNESS_STEPS = 0.02
+LARSON_FADE_STEPS = 0.01
+LARSON_BRIGHTNESS_STEPS = 0.05
 
 try:
     name = badge.nvs_get_str('owner', 'name', 'Christopher')

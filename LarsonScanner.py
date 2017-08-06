@@ -6,7 +6,7 @@ class LarsonScanner:
     def __init__(self, colors=pride_colors):
         self.colors = colors
         self.direction = -1
-        self.brightness = 1.0
+        self.brightness = 0.1
         self.current_led = 5        # use 5 if direction is -1, and 0 if direction is 1!
         self.decay = 0.8
         self.speed = 0.1        # duration for sleeps in seconds, as for time.sleep()
