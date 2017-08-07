@@ -1,7 +1,5 @@
 import ugfx, badge, appglue
 
-import PoliceScanner
-
 try:
     from . import LarsonScanner
 except:
