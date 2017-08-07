@@ -1,7 +1,7 @@
 import badge, binascii, hashlib, time
 
 class LarsonScanner:
-    pride_colors = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")
+    pride_colors = ("75078700", "004dff00", "00802600", "ffed0000", "ff8c0000", "e4030300")
 
     def __init__(self, colors=pride_colors):
         self.colors = colors

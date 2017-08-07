@@ -7,7 +7,7 @@ except:
 
 LARSON_LIB = '/lib/larsonstage/' # change to /lib/larson_pride for public release
 LARSON_NAMESPACE = 'larson_pride'
-LARSON_VERSION = 'v41'
+LARSON_VERSION = 'v42'
 LARSON_FADE_STEPS = 0.02
 LARSON_BRIGHTNESS_STEPS = 0.05
 
@@ -123,12 +123,13 @@ def noop(pressed):
 # colors as RGB in hex
 color_maps = {
     'shrug.png'     : LarsonScanner.LarsonScanner(LarsonScanner.LarsonScanner.user_colors(name)),
-    'pride.png'     : LarsonScanner.LarsonScanner(LarsonScanner.LarsonScanner.pride_colors),
-    'kitt.png'      : LarsonScanner.LarsonScanner(list('FF0000' for _ in range(6))), # red
-    'goliath.png'   : LarsonScanner.LarsonScanner(list('00FF00' for _ in range(6))), # green
-    'blue.png'      : LarsonScanner.LarsonScanner(list('0000FF' for _ in range(6))), # blue
-    'karr.png'      : LarsonScanner.LarsonScanner(list('FFFF00' for _ in range(6))), # yellow
-    'police.png'    : PoliceScanner.PoliceScanner(['FF0000', 'DD0011', '990022', '220099', '1100DD', '0000FF'])}   # police lights
+    'pride.png'     : LarsonScanner.LarsonScanner(LarsonScanner.LarsonScanner.pride_colors), # pride
+    'kitt.png'      : LarsonScanner.LarsonScanner(list('FF000000' for _ in range(6))), # red
+    'goliath.png'   : LarsonScanner.LarsonScanner(list('00FF0000' for _ in range(6))), # green
+    'blue.png'      : LarsonScanner.LarsonScanner(list('0000FF00' for _ in range(6))), # blue
+    'karr.png'      : LarsonScanner.LarsonScanner(list('FFFF0000' for _ in range(6))), # yellow
+    'white.png'     : LarsonScanner.LarsonScanner(list('FFFFFFFF' for _ in range(6))), # white
+    'police.png'    : PoliceScanner.PoliceScanner()}   # police lights
 
 color_images = list(color_maps.keys())
 
