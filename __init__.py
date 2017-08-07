@@ -24,33 +24,34 @@ def settings_set_color_map(val):
     return settings_set('color_map', val)
 
 
-def settings_get_decay(default = 0.6):
-    return settings_get('decay', default)
+def settings_get_decay(default = 60):
+    return round(settings_get('decay', default) / 100, 2)
 
 def settings_set_decay(val):
-    return settings_set('decay', val)
+    return settings_set('decay', int(val * 100))
 
 
-def settings_get_brightness(default = 0.1):
-    return settings_get('brightness', default)
+def settings_get_brightness(default = 10):
+    return round(settings_get('brightness', default) / 100, 2)
 
 def settings_set_brightness(val):
-    return settings_set('brightness', val)
+    return settings_set('brightness', int(val * 100))
 
 
 def settings_get(key, default = 0):
     try:
-        return badge.nvs_get_u8(LARSON_NAMESPACE, key, default)
+        value = badge.nvs_get_u8(LARSON_NAMESPACE, key, default)
+        print('get', key, value, 'default', default)
+        return value
     except:
         return default
 
 def settings_set(key, val):
-    print(val)
+    print('set', key, val)
     try:
         return badge.nvs_set_u8(LARSON_NAMESPACE, key, val)
     except:
         pass
-    print(settings_get(key))
     return settings_get(key)
 
 
@@ -103,8 +104,8 @@ def show_scanner():
     global current_color_map, scanner
     image = color_images[current_color_map]
     scanner = color_maps[image]
-    scanner.decay = settings_get_decay()
-    scanner.brightness = settings_get_brightness()
+    scanner.brightness = settings_get_brightness() if 0 < settings_get_brightness() < 1 else 0.1
+    scanner.decay = settings_get_decay() if 0 < settings_get_decay() < 1 else 0.6
     try:
         ugfx.area(0, 0, 176, 128, ugfx.WHITE)
         ugfx.flush()
