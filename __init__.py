@@ -9,7 +9,7 @@ LARSON_LIB = '/lib/larson_pride/' # change to /lib/larson_pride for public relea
 LARSON_NAMESPACE = 'larson_pride'
 LARSON_VERSION = 'v42'
 LARSON_FADE_STEPS = 0.02
-LARSON_BRIGHTNESS_STEPS = 0.05
+LARSON_BRIGHTNESS_STEPS = 0.04
 
 try:
     name = badge.nvs_get_str('owner', 'name', 'Christopher')
@@ -24,18 +24,18 @@ def settings_set_color_map(val):
     return settings_set('color_map', val)
 
 
-def settings_get_decay(default = 60):
-    return round(settings_get('decay', default) / 100, 2)
+def settings_get_decay(default = 127):
+    return round(settings_get('decay', default) / 255, 2)
 
 def settings_set_decay(val):
-    return settings_set('decay', int(val * 100))
+    return settings_set('decay', int(val * 255))
 
 
-def settings_get_brightness(default = 10):
-    return round(settings_get('brightness', default) / 100, 2)
+def settings_get_brightness(default = 31):
+    return round(settings_get('brightness', default) / 255, 2)
 
 def settings_set_brightness(val):
-    return settings_set('brightness', int(val * 100))
+    return settings_set('brightness', int(val * 255))
 
 
 def settings_get(key, default = 0):
@@ -62,13 +62,19 @@ def home(pushed):
 
 def inc_brightness(pressed):
     if pressed:
-        scanner.change_brightness(LARSON_BRIGHTNESS_STEPS)
+        if (scanner.brightness < 0.1):
+            scanner.change_brightness(0.01)
+        else:
+            scanner.change_brightness(LARSON_BRIGHTNESS_STEPS)
         settings_set_brightness(scanner.brightness)
 
 
 def dec_brightness(pressed):
     if pressed:
-        scanner.change_brightness(-LARSON_BRIGHTNESS_STEPS)
+        if (scanner.brightness < 0.1):
+            scanner.change_brightness(-0.01)
+        else:
+            scanner.change_brightness(-LARSON_BRIGHTNESS_STEPS)
         settings_set_brightness(scanner.brightness)
 
 
