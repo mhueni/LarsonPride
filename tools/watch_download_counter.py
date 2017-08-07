@@ -12,8 +12,10 @@ def main():
     hitlist = sorted(data, key=lambda x: x['download_counter'], reverse=True)
     
     for h in hitlist:
-        print('{:10d} {:}'.format(h['download_counter'], h['name']))
-    
+        print('{:10d} {:30} {}'.format(h['download_counter'], h['name'], h['revision']))
+        
+    with open('last_data.json', 'w') as last_json_file:
+        json.dump(data, last_json_file)
     
 
 if __name__ == '__main__':
