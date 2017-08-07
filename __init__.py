@@ -107,7 +107,7 @@ color_maps = (
     list('FF0000' for _ in range(6)), # red
     list('00FF00' for _ in range(6)), # green
     list('0000FF' for _ in range(6)), # blue
-    ['FF0000', 'CC0033', '990055', '550099', '3300CC', '0000FF'])   # police lights
+    ['FF0000', 'DD0011', '990022', '220099', '1100DD', '0000FF'])   # police lights
 
 badge.init()
 badge.leds_init()
