@@ -5,7 +5,7 @@ try:
 except:
     import LarsonScanner, PoliceScanner
 
-LARSON_LIB = '/lib/larsonstage/' # change to /lib/larson_pride for public release
+LARSON_LIB = '/lib/larson_pride/' # change to /lib/larson_pride for public release
 LARSON_NAMESPACE = 'larson_pride'
 LARSON_VERSION = 'v42'
 LARSON_FADE_STEPS = 0.02
@@ -128,7 +128,7 @@ color_maps = {
     'tree.png'      : LarsonScanner.LarsonScanner(list('00FF0000' for _ in range(6))), # green
     'ohm2013.png'   : LarsonScanner.LarsonScanner(list('0000FF00' for _ in range(6))), # blue
     'karr.png'      : LarsonScanner.LarsonScanner(list('FFFF0000' for _ in range(6))), # yellow
-    'gunter.png'    : LarsonScanner.LarsonScanner(list('000000FF' for _ in range(6))), # white
+    'gunter.png'    : LarsonScanner.LarsonScanner(list('FFFFFF00' for _ in range(6))), # white
     'police.png'    : PoliceScanner.PoliceScanner()}   # police lights
 
 color_images = list(color_maps.keys())
