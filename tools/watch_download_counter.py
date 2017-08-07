@@ -12,7 +12,7 @@ def main():
     hitlist = sorted(data, key=lambda x: x['download_counter'], reverse=True)
     
     for h in hitlist:
-        print(h['download_counter'], h['name'])
+        print('{:10d} {:}'.format(h['download_counter'], h['name']))
     
     
 
