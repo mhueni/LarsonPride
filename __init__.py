@@ -1,9 +1,17 @@
 import ugfx, badge, appglue
 
+import PoliceScanner
+
 try:
     from . import LarsonScanner
 except:
     import LarsonScanner
+try:
+    from . import PoliceScanner
+except:
+    import PoliceScanner
+    
+    
 
 LARSON_VERSION = "v41"
 LARSON_NAMESPACE = 'larson_pride'
@@ -101,13 +109,13 @@ def noop(pressed):
 
 
 # colors as RGB in hex
-color_maps = (
-    LarsonScanner.LarsonScanner.user_colors(name),
-    LarsonScanner.LarsonScanner.pride_colors,
-    list('FF0000' for _ in range(6)), # red
-    list('00FF00' for _ in range(6)), # green
-    list('0000FF' for _ in range(6)), # blue
-    ['FF0000', 'DD0011', '990022', '220099', '1100DD', '0000FF'])   # police lights
+# color_maps = (
+#     LarsonScanner.LarsonScanner.user_colors(name),
+#     LarsonScanner.LarsonScanner.pride_colors,
+#     list('FF0000' for _ in range(6)), # red
+#     list('00FF00' for _ in range(6)), # green
+#     list('0000FF' for _ in range(6)), # blue
+#     ['FF0000', 'DD0011', '990022', '220099', '1100DD', '0000FF'])   # police lights
 
 badge.init()
 badge.leds_init()
@@ -142,9 +150,9 @@ except:
 
 ugfx.flush()
 
-scanner = LarsonScanner.LarsonScanner()
-current_color_map = settings_get_color_map()
-scanner.colors = color_maps[current_color_map]
+scanner = PoliceScanner.PoliceScanner()
+# current_color_map = settings_get_color_map()
+# scanner.colors = color_maps[current_color_map]
 scanner.decay = settings_get_decay()
 scanner.brightness = settings_get_brightness()
 
