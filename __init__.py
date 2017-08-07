@@ -1,9 +1,9 @@
 import ugfx, badge, appglue
 
 try:
-    from . import LarsonScanner
+    from . import LarsonScanner, PoliceScanner
 except:
-    import LarsonScanner
+    import LarsonScanner, PoliceScanner
 
 LARSON_LIB = '/lib/larsonstage/' # change to /lib/larson_pride for public release
 LARSON_NAMESPACE = 'larson_pride'
@@ -45,10 +45,12 @@ def settings_get(key, default = 0):
         return default
 
 def settings_set(key, val):
+    print(val)
     try:
         return badge.nvs_set_u8(LARSON_NAMESPACE, key, val)
     except:
         pass
+    print(settings_get(key))
     return settings_get(key)
 
 
@@ -73,20 +75,16 @@ def larson_mode_next(pressed):
     global current_color_map
     if pressed:
         current_color_map = (current_color_map + 1) % len(color_maps)
-        color_image = color_images[current_color_map]
-        show_image(color_image)
-        scanner.colors = color_maps[color_image]
         settings_set_color_map(current_color_map)
+        show_scanner()
 
 
 def larson_mode_prev(pressed):
     global current_color_map
     if pressed:
         current_color_map = (current_color_map - 1 + len(color_maps)) % len(color_maps)
-        color_image = color_images[current_color_map]
-        show_image(color_image)
-        scanner.colors = color_maps[color_image]
         settings_set_color_map(current_color_map)
+        show_scanner()
 
 
 def inc_decay(pressed):
@@ -101,7 +99,12 @@ def dec_decay(pressed):
         settings_set_decay(scanner.decay)
 
 
-def show_image(image):
+def show_scanner():
+    global current_color_map, scanner
+    image = color_images[current_color_map]
+    scanner = color_maps[image]
+    scanner.decay = settings_get_decay()
+    scanner.brightness = settings_get_brightness()
     try:
         ugfx.area(0, 0, 176, 128, ugfx.WHITE)
         ugfx.flush()
@@ -118,13 +121,13 @@ def noop(pressed):
 
 # colors as RGB in hex
 color_maps = {
-    'shrug.png'      : LarsonScanner.LarsonScanner.user_colors(name),
-    'pride.png'     : LarsonScanner.LarsonScanner.pride_colors,
-    'kitt.png'      : list('FF0000' for _ in range(6)), # red
-    'goliath.png'   : list('00FF00' for _ in range(6)), # green
-    'blue.png'      : list('0000FF' for _ in range(6)), # blue
-    'karr.png'      : list('FFFF00' for _ in range(6)), # yellow
-    'police.png'    : ['FF0000', 'DD0011', '990022', '220099', '1100DD', '0000FF']}   # police lights
+    'shrug.png'     : LarsonScanner.LarsonScanner(LarsonScanner.LarsonScanner.user_colors(name)),
+    'pride.png'     : LarsonScanner.LarsonScanner(LarsonScanner.LarsonScanner.pride_colors),
+    'kitt.png'      : LarsonScanner.LarsonScanner(list('FF0000' for _ in range(6))), # red
+    'goliath.png'   : LarsonScanner.LarsonScanner(list('00FF00' for _ in range(6))), # green
+    'blue.png'      : LarsonScanner.LarsonScanner(list('0000FF' for _ in range(6))), # blue
+    'karr.png'      : LarsonScanner.LarsonScanner(list('FFFF00' for _ in range(6))), # yellow
+    'police.png'    : PoliceScanner.PoliceScanner(['FF0000', 'DD0011', '990022', '220099', '1100DD', '0000FF'])}   # police lights
 
 color_images = list(color_maps.keys())
 
@@ -159,12 +162,8 @@ ugfx.string(279, 116, LARSON_VERSION,"Roboto_Regular10",ugfx.BLACK)
 
 ugfx.flush()
 
-scanner = LarsonScanner.LarsonScanner()
 current_color_map = settings_get_color_map()
-scanner.colors = color_maps[color_images[current_color_map]]
-scanner.decay = settings_get_decay()
-scanner.brightness = settings_get_brightness()
-show_image(color_images[current_color_map])
+show_scanner()
 
 while True:
     scanner.draw()
