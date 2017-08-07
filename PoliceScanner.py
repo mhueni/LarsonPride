@@ -8,8 +8,8 @@ class PoliceScanner():
         self.side = -1
         self.brightness = 1.0
         self.cycle = 0              # keep track of blinking state: 0: on; 1,2,3: just decay;  4: on; 5,6,7: just decay, then change side
-        self.decay = 0.5
-        self.speed = 0.1  # duration for sleeps in seconds, as for time.sleep()
+        self.decay = 0.8
+        self.speed = 0.05  # duration for sleeps in seconds, as for time.sleep()
     
         self.leds_intensity = [1, 1, 1, 0, 0, 0]
 
@@ -33,17 +33,21 @@ class PoliceScanner():
 
     def draw(self):
         # First calc intensity on each led
+        pass
         for x, intensity in enumerate(self.leds_intensity):
             new_intensity = intensity * self.decay
             self.leds_intensity[x] = round(new_intensity, 3)
         
-        # But side leds gets full intensity. (brightness is later)
-        if self.side > 0:
-            self.leds_intensity[3:6] = [1.0, 1.0, 1.0]
-        else:
-            self.leds_intensity[0:3] = [1.0, 1.0, 1.0]
-            
-        self.side *= -1
+        # But side leds gets full intensity every second cycle. (brightness is later)
+        if self.cycle == 3:
+            self.side *= -1
+            if self.side > 0:
+                self.leds_intensity[3:6] = [1.0, 1.0, 1.0]
+            else:
+                self.leds_intensity[0:3] = [1.0, 1.0, 1.0]
+        
+        self.cycle = (self.cycle + 1) % 4
+        
 
     
         # print(self.leds_intensity)
