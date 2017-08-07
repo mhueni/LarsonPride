@@ -140,7 +140,7 @@ ugfx.string(279, 117, LARSON_VERSION,"Roboto_Regular10",ugfx.BLACK)
 try:
     badge.eink_png(0,0,'/lib/larsonstage/karr.png')
 except:
-    ugfx.string(100,50,"Error loading shrug.png","Roboto_Regular12",ugfx.BLACK)
+    ugfx.string(100,50,"Error loading karr.png","Roboto_Regular12",ugfx.BLACK)
 
 ugfx.flush()
 
