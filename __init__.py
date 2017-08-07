@@ -1,20 +1,42 @@
-import ugfx, badge, binascii, time, appglue
+import ugfx, badge, appglue
 
-LARSON_VERSION = "v4.5"
-LARSON_FADE_STEPS = 0.05
-LARSON_BRIGHTNESS_STEPS = 0.02
-larson_modes = ('pride', 'ff0000', '00ff00', '0000ff', 'ffffff')
-pride_colors = ("750787", "004dff", "008026", "ffed00", "ff8c00", "e40303")
-current_mode = 0
-current_led = 0
-direction = 1
-larson_fade = 0.6
-larson_brightness = 0.1
-leds = [0, 0, 0, 0, 0, 0]
+try:
+    from . import LarsonScanner
+except:
+    import LarsonScanner
+
+LARSON_VERSION = "v4.6"
+LARSON_NAMESPACE = 'larson_pride'
+LARSON_FADE_STEPS = 0.01
+LARSON_BRIGHTNESS_STEPS = 0.05
+
 try:
     name = badge.nvs_get_str('owner', 'name', 'Christopher')
 except:
     name = "Emulator"
+
+
+def settings_color_map(val = None):
+    return _settings_get_set('color_map', val)
+
+
+def settings_decay(val = None):
+    return _settings_get_set('decay', val)
+
+
+def settings_brightness(val = None):
+    return _settings_get_set('brightness', val)
+
+
+def _settings_get_set(key, val = None):
+    print(key)
+    print(val)
+    try:
+        if val:
+            badge.nvs_set_u8(LARSON_NAMESPACE, key, val)
+        return badge.nvs_get_u8(LARSON_NAMESPACE, key, val)
+    except:
+        return val or 0
 
 
 def home(pushed):
@@ -22,84 +44,68 @@ def home(pushed):
         appglue.home()
 
 
-def larson(led_pos, val):
-    global current_mode, larson_modes
-    color = larson_modes[current_mode]
-    if (color == 'pride'):
-        color = pride_colors[led_pos]
-    led_colors = [int(val * larson_brightness * x) for (x) in binascii.unhexlify(color + '00')]
-    return (led_colors[1], led_colors[0], led_colors[2], led_colors[3])
-
-
-def larson_brightness_inc(inc):
-    global larson_brightness
-    new_value = round(larson_brightness + inc, 2)
-    if 0 < new_value < 1:
-        larson_brightness = new_value
-    print_settings()
-
-
-def larson_brightness_up(pressed):
+def inc_brightness(pressed):
     if pressed:
-        larson_brightness_inc(LARSON_BRIGHTNESS_STEPS)
+        scanner.change_brightness(LARSON_BRIGHTNESS_STEPS)
+        settings_brightness(scanner.brightness)
 
 
-def larson_brightness_down(pressed):
+def dec_brightness(pressed):
     if pressed:
-        larson_brightness_inc(-LARSON_BRIGHTNESS_STEPS)
-
-
-def larson_fade_inc(inc):
-    global larson_fade
-    new_value = round(larson_fade + inc, 2)
-    if 0 < new_value < 1:
-        larson_fade = new_value
-    print_settings()
-
-
-def larson_fade_more(pressed):
-    if pressed:
-        larson_fade_inc(LARSON_FADE_STEPS)
-
-
-def larson_fade_less(pressed):
-    if pressed:
-        larson_fade_inc(-LARSON_FADE_STEPS)
-
-
-def larson_mode_change(inc):
-    global current_mode, larson_modes
-    current_mode = int(current_mode + inc) % len(larson_modes)
-    print_settings()
+        scanner.change_brightness(-LARSON_BRIGHTNESS_STEPS)
+        settings_brightness(scanner.brightness)
 
 
 def larson_mode_next(pressed):
+    global current_color_map
     if pressed:
-        larson_mode_change(1)
+        current_color_map = (current_color_map + 1) % len(color_maps)
+        scanner.colors = color_maps[current_color_map]
+        settings_color_map(current_color_map)
 
 
 def larson_mode_prev(pressed):
+    global current_color_map
     if pressed:
-        larson_mode_change(-1)
+        current_color_map = (current_color_map - 1 + len(color_maps)) % len(color_maps)
+        scanner.colors = color_maps[current_color_map]
+        settings_color_map(current_color_map)
+
+
+def inc_decay(pressed):
+    if pressed:
+        scanner.change_decay(LARSON_FADE_STEPS)
+        settings_decay(scanner.decay)
+
+
+def dec_decay(pressed):
+    if pressed:
+        scanner.change_decay(-LARSON_FADE_STEPS)
+        settings_decay(scanner.decay)
 
 
 def noop(pressed):
     pass
 
 
-def print_settings():
-    global current_mode, larson_brightness, larson_fade
-    print("mode={:d}/brightness={:0.2f}/fade={:0.2f}".format(current_mode, larson_brightness, larson_fade))
-
+# colors as RGB in hex
+current_color_map = settings_color_map(0)
+color_maps = (
+    LarsonScanner.LarsonScanner.user_colors(name),
+    LarsonScanner.LarsonScanner.pride_colors,
+    list('FF0000' for _ in range(6)), #red
+    list('00FF00' for _ in range(6)), #green,
+    list('0000FF' for _ in range(6))
+    )
 
 badge.init()
 badge.leds_init()
 ugfx.init()
 ugfx.input_init()
-ugfx.input_attach(ugfx.JOY_UP, larson_brightness_up)
-ugfx.input_attach(ugfx.JOY_DOWN, larson_brightness_down)
-ugfx.input_attach(ugfx.JOY_LEFT, larson_fade_less)
-ugfx.input_attach(ugfx.JOY_RIGHT, larson_fade_more)
+ugfx.input_attach(ugfx.JOY_UP, inc_brightness) # TODO rename to _up
+ugfx.input_attach(ugfx.JOY_DOWN, dec_brightness)
+ugfx.input_attach(ugfx.JOY_LEFT, dec_decay) # same here
+ugfx.input_attach(ugfx.JOY_RIGHT, inc_decay)
 ugfx.input_attach(ugfx.BTN_A, larson_mode_next)
 ugfx.input_attach(ugfx.BTN_B, larson_mode_prev)
 ugfx.input_attach(ugfx.BTN_START, home)
@@ -125,16 +131,11 @@ except:
 
 ugfx.flush()
 
+scanner = LarsonScanner.LarsonScanner()
+scanner.colors = color_maps[settings_color_map()]
+scanner.decay = settings_decay(0.8)
+scanner.brightness = settings_brightness(0.1)
+
 while True:
-    for x in range(0, 6):
-#        leds[x] = round(leds[x] - larson_fade, 1) if leds[x] > larson_fade else 0.0
-        leds[x] = round(leds[x] * larson_fade, 2) if leds[x] > 0 else 0.0
-    leds[current_led] = 1.0
-    #    print(larson_seq)
-    led_colors = ''.join(
-        [''.join(["{0:02x}".format(int(led)) for led in larson(idx, val)]) for idx, val in enumerate(leds)])
-    badge.leds_send_data(binascii.unhexlify(led_colors), 24)
-    current_led = current_led + direction
-    direction = -direction if current_led in (0, 5) else direction
-    #    ugfx.flush()
-    time.sleep(0.1)
+    scanner.draw()
+    scanner.wait()
