@@ -58,11 +58,13 @@ def larson_mode_prev(pressed):
 
 
 def inc_decay(pressed):
-    scanner.change_decay(LARSON_FADE_STEPS)
+    if pressed:
+        scanner.change_decay(LARSON_FADE_STEPS)
 
 
 def dec_decay(pressed):
-    scanner.change_decay(-LARSON_FADE_STEPS)
+    if pressed:
+        scanner.change_decay(-LARSON_FADE_STEPS)
 
 
 def noop(pressed):
