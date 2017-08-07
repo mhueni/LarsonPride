@@ -5,7 +5,7 @@ try:
 except:
     import LarsonScanner
 
-LARSON_VERSION = "v4.6"
+LARSON_VERSION = "v41"
 LARSON_NAMESPACE = 'larson_pride'
 LARSON_FADE_STEPS = 0.01
 LARSON_BRIGHTNESS_STEPS = 0.05
