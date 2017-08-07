@@ -29,7 +29,7 @@ class PoliceScanner():
         color = self.colors[led_pos]
     
         led_colors = [int(brightness * x) for x in binascii.unhexlify(color + '00')]
-        return (led_colors[0], led_colors[1], led_colors[2], led_colors[3])  # grbw
+        return (led_colors[1], led_colors[0], led_colors[2], led_colors[3])  # grbw
 
     def draw(self):
         # First calc intensity on each led
