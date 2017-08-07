@@ -15,15 +15,29 @@ try:
 except:
     name = "Emulator"
 
-# colors as RGB in hex
-current_color_map = 0
-color_maps = (
-    LarsonScanner.LarsonScanner.user_colors(name),
-    LarsonScanner.LarsonScanner.pride_colors,
-    list('FF0000' for _ in range(6)), #red
-    list('00FF00' for _ in range(6)), #green,
-    list('0000FF' for _ in range(6))
-    )
+
+def settings_color_map(val = None):
+    return _settings_get_set('color_map', val)
+
+
+def settings_decay(val = None):
+    return _settings_get_set('decay', val)
+
+
+def settings_brightness(val = None):
+    return _settings_get_set('brightness', val)
+
+
+def _settings_get_set(key, val = None):
+    print(key)
+    print(val)
+    try:
+        if val:
+            badge.nvs_set_u8(LARSON_NAMESPACE, key, val)
+        return badge.nvs_get_u8(LARSON_NAMESPACE, key, val)
+    except:
+        return val or 0
+
 
 def home(pushed):
     if(pushed):
@@ -70,31 +84,19 @@ def dec_decay(pressed):
         settings_decay(scanner.decay)
 
 
-def settings_color_map(val = None):
-    return _settings_get_set('color_map', val)
-
-
-def settings_decay(val = None):
-    return _settings_get_set('decay', val)
-
-
-def settings_brightness(val = None):
-    return _settings_get_set('brightness', val)
-
-
-def _settings_get_set(key, val = None):
-    print(key)
-    print(val)
-    try:
-        if val:
-            badge.nvs_set_u8(LARSON_NAMESPACE, key, val)
-        return badge.nvs_get_u8(LARSON_NAMESPACE, key, 0)
-    except:
-        return val or 0
-
 def noop(pressed):
     pass
 
+
+# colors as RGB in hex
+current_color_map = settings_color_map(0)
+color_maps = (
+    LarsonScanner.LarsonScanner.user_colors(name),
+    LarsonScanner.LarsonScanner.pride_colors,
+    list('FF0000' for _ in range(6)), #red
+    list('00FF00' for _ in range(6)), #green,
+    list('0000FF' for _ in range(6))
+    )
 
 badge.init()
 badge.leds_init()
