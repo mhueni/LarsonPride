@@ -17,9 +17,9 @@ except:
 # colors as RGB in hex
 current_color_map = 0
 colors = {'user': LarsonScanner.LarsonScanner.user_colors(name),
-          'red': ('FF0000' * 6),
-          'green': ('00FF00'* 6),
-          'blue': ('0000FF' * 6),
+          'red': (['FF0000' for _ in range(6)]),
+          'green': (['00FF00' for _ in range(6)]),
+          'blue': (['0000FF' for _ in range(6)]),
           'pride': LarsonScanner.LarsonScanner.pride_colors}
 color_maps = list(colors.keys())
 
