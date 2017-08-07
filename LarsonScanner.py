@@ -63,8 +63,8 @@ class LarsonScanner:
         badge.leds_send_data(bytes(leds_as_grbw), 24)
 
     def user_colors(name):
-        name_digest = binascii.hexlify(hashlib.sha256(name).digest())
-        name_colors = (name_digest[0:6], name_digest[6:12], name_digest[12:18], name_digest[18:24], name_digest[24:30], name_digest[30:36])
+        name_digest = binascii.hexlify(hashlib.sha1(name).digest())
+        name_colors = (name_digest[30:36], name_digest[24:30], name_digest[18:24], name_digest[12:18], name_digest[6:12], name_digest[0:6])
         return list(c.decode() for c in name_colors)
 
     def wait(self):
