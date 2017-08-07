@@ -16,13 +16,14 @@ except:
 
 # colors as RGB in hex
 current_color_map = 0
-colors = {'user': LarsonScanner.LarsonScanner.user_colors(name),
-          'red': ("FF0000", "FF0000", "FF0000", "FF0000", "FF0000", "FF0000"),
-          'green': ('00FF00', '00FF00', '00FF00', '00FF00', '00FF00', '00FF00'),
-          'blue': ('0000FF', '0000FF', '0000FF', '0000FF', '0000FF', '0000FF'),
-          'pride': LarsonScanner.LarsonScanner.pride_colors}
-color_maps = list(colors.keys())
-
+color_maps = (
+          LarsonScanner.LarsonScanner.user_colors(name),
+          LarsonScanner.LarsonScanner.pride_colors,
+          list('FF0000' for _ in range(6)), #red
+          list('00FF00' for _ in range(6)), #green,
+          list('0000FF' for _ in range(6)) #blue
+          )
+print(color_maps)
 
 def home(pushed):
     if(pushed):
@@ -42,19 +43,17 @@ def dec_brightness(pressed):
 def larson_mode_next(pressed):
     global current_color_map
     if pressed:
-        current_color_map += 1
-        if current_color_map >= len(color_maps):
-            current_color_map = 0
-        scanner.colors = colors[color_maps[current_color_map]]
+        current_color_map = current_color_map + 1 % len(color_maps)
+        scanner.colors = color_maps[current_color_map]
+        print(current_color_map)
 
 
 def larson_mode_prev(pressed):
     global current_color_map
     if pressed:
-        current_color_map -= 1
-        if current_color_map < 0:
-            current_color_map = len(color_maps)-1
-        scanner.colors = colors[color_maps[current_color_map]]
+        current_color_map = ( current_color_map - 1 + len(color_maps) ) % len(color_maps)
+        scanner.colors = color_maps[current_color_map]
+        print(current_color_map)
 
 
 def inc_decay(pressed):
