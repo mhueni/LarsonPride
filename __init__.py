@@ -7,7 +7,7 @@ except:
 
 LARSON_VERSION = "v41"
 LARSON_NAMESPACE = 'larson_pride'
-LARSON_FADE_STEPS = 0.01
+LARSON_FADE_STEPS = 0.02
 LARSON_BRIGHTNESS_STEPS = 0.05
 
 try:
@@ -16,27 +16,39 @@ except:
     name = "Emulator"
 
 
-def settings_color_map(val = None):
-    return _settings_get_set('color_map', val)
+def settings_get_color_map(default = 0):
+    return settings_get('color_map', default)
+
+def settings_set_color_map(val):
+    return settings_set('color_map', val)
 
 
-def settings_decay(val = None):
-    return _settings_get_set('decay', val)
+def settings_get_decay(default = 0.6):
+    return settings_get('decay', default)
+
+def settings_set_decay(val):
+    return settings_set('decay', val)
 
 
-def settings_brightness(val = None):
-    return _settings_get_set('brightness', val)
+def settings_get_brightness(default = 0.1):
+    return settings_get('brightness', default)
+
+def settings_set_brightness(val):
+    return settings_set('brightness', val)
 
 
-def _settings_get_set(key, val = None):
-    print(key)
-    print(val)
+def settings_get(key, default = 0):
     try:
-        if val:
-            badge.nvs_set_u8(LARSON_NAMESPACE, key, val)
-        return badge.nvs_get_u8(LARSON_NAMESPACE, key, val)
+        return badge.nvs_get_u8(LARSON_NAMESPACE, key, default)
     except:
-        return val or 0
+        return default
+
+def settings_set(key, val):
+    try:
+        return badge.nvs_set_u8(LARSON_NAMESPACE, key, val)
+    except:
+        pass
+    return settings_get(key)
 
 
 def home(pushed):
@@ -47,41 +59,41 @@ def home(pushed):
 def inc_brightness(pressed):
     if pressed:
         scanner.change_brightness(LARSON_BRIGHTNESS_STEPS)
-        settings_brightness(scanner.brightness)
+        settings_set_brightness(scanner.brightness)
 
 
 def dec_brightness(pressed):
     if pressed:
         scanner.change_brightness(-LARSON_BRIGHTNESS_STEPS)
-        settings_brightness(scanner.brightness)
+        settings_set_brightness(scanner.brightness)
 
 
 def larson_mode_next(pressed):
     global current_color_map
     if pressed:
-        current_color_map = (current_color_map + 1) % len(color_maps)
-        scanner.colors = color_maps[current_color_map]
-        settings_color_map(current_color_map)
+        current_color_map = (settings_get_color_map() + 1) % len(color_maps)
+        settings_set_color_map(current_color_map)
+        scanner.colors = color_maps[settings_get_color_map()]
 
 
 def larson_mode_prev(pressed):
     global current_color_map
     if pressed:
-        current_color_map = (current_color_map - 1 + len(color_maps)) % len(color_maps)
-        scanner.colors = color_maps[current_color_map]
-        settings_color_map(current_color_map)
+        current_color_map = (settings_get_color_map() - 1 + len(color_maps)) % len(color_maps)
+        settings_set_color_map(current_color_map)
+        scanner.colors = color_maps[settings_get_color_map()]
 
 
 def inc_decay(pressed):
     if pressed:
         scanner.change_decay(LARSON_FADE_STEPS)
-        settings_decay(scanner.decay)
+        settings_set_decay(scanner.decay)
 
 
 def dec_decay(pressed):
     if pressed:
         scanner.change_decay(-LARSON_FADE_STEPS)
-        settings_decay(scanner.decay)
+        settings_set_decay(scanner.decay)
 
 
 def noop(pressed):
@@ -89,7 +101,6 @@ def noop(pressed):
 
 
 # colors as RGB in hex
-current_color_map = settings_color_map(0)
 color_maps = (
     LarsonScanner.LarsonScanner.user_colors(name),
     LarsonScanner.LarsonScanner.pride_colors,
@@ -132,9 +143,9 @@ except:
 ugfx.flush()
 
 scanner = LarsonScanner.LarsonScanner()
-scanner.colors = color_maps[settings_color_map()]
-scanner.decay = settings_decay(0.8)
-scanner.brightness = settings_brightness(0.1)
+scanner.colors = color_maps[settings_get_color_map()]
+scanner.decay = settings_get_decay()
+scanner.brightness = settings_get_brightness()
 
 while True:
     scanner.draw()
