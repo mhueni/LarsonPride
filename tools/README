@@ -1,0 +1,3 @@
+run watch_download_counter.py as follows for optimal ux
+
+watch -n 10 -d 'python3 watch_download_counter.py'
