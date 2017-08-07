@@ -6,6 +6,7 @@ except:
     import LarsonScanner
 
 LARSON_VERSION = "v4.6"
+LARSON_NAMESPACE = 'larson_pride'
 LARSON_FADE_STEPS = 0.01
 LARSON_BRIGHTNESS_STEPS = 0.05
 
@@ -17,12 +18,12 @@ except:
 # colors as RGB in hex
 current_color_map = 0
 color_maps = (
-          LarsonScanner.LarsonScanner.user_colors(name),
-          LarsonScanner.LarsonScanner.pride_colors,
-          list('FF0000' for _ in range(6)), #red
-          list('00FF00' for _ in range(6)), #green,
-          list('0000FF' for _ in range(6))
-          )
+    LarsonScanner.LarsonScanner.user_colors(name),
+    LarsonScanner.LarsonScanner.pride_colors,
+    list('FF0000' for _ in range(6)), #red
+    list('00FF00' for _ in range(6)), #green,
+    list('0000FF' for _ in range(6))
+    )
 
 def home(pushed):
     if(pushed):
@@ -32,43 +33,68 @@ def home(pushed):
 def inc_brightness(pressed):
     if pressed:
         scanner.change_brightness(LARSON_BRIGHTNESS_STEPS)
+        settings_brightness(scanner.brightness)
 
 
 def dec_brightness(pressed):
     if pressed:
         scanner.change_brightness(-LARSON_BRIGHTNESS_STEPS)
+        settings_brightness(scanner.brightness)
 
 
 def larson_mode_next(pressed):
     global current_color_map
     if pressed:
         current_color_map = (current_color_map + 1) % len(color_maps)
-        print(current_color_map)
         scanner.colors = color_maps[current_color_map]
+        settings_color_map(current_color_map)
 
 
 def larson_mode_prev(pressed):
     global current_color_map
     if pressed:
         current_color_map = (current_color_map - 1 + len(color_maps)) % len(color_maps)
-        print(current_color_map)
         scanner.colors = color_maps[current_color_map]
+        settings_color_map(current_color_map)
 
 
 def inc_decay(pressed):
     if pressed:
         scanner.change_decay(LARSON_FADE_STEPS)
+        settings_decay(scanner.decay)
 
 
 def dec_decay(pressed):
     if pressed:
         scanner.change_decay(-LARSON_FADE_STEPS)
+        settings_decay(scanner.decay)
 
+
+def settings_color_map(val = None):
+    return _settings_get_set('color_map', val)
+
+
+def settings_decay(val = None):
+    return _settings_get_set('decay', val)
+
+
+def settings_brightness(val = None):
+    return _settings_get_set('brightness', val)
+
+
+def _settings_get_set(key, val = None):
+    print(key)
+    print(val)
+    try:
+        if val:
+            badge.nvs_set_u8(LARSON_NAMESPACE, key, val)
+        return badge.nvs_get_u8(LARSON_NAMESPACE, key, 0)
+    except:
+        return val or 0
 
 def noop(pressed):
     pass
 
-scanner = LarsonScanner.LarsonScanner()
 
 badge.init()
 badge.leds_init()
@@ -102,6 +128,11 @@ except:
     ugfx.string(100,50,"Error loading shrug.png","Roboto_Regular12",ugfx.BLACK)
 
 ugfx.flush()
+
+scanner = LarsonScanner.LarsonScanner()
+scanner.colors = color_maps[settings_color_map()]
+scanner.decay = settings_decay(0.8)
+scanner.brightness = settings_brightness(0.1)
 
 while True:
     scanner.draw()
