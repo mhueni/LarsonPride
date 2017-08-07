@@ -125,10 +125,10 @@ color_maps = {
     'shrug.png'     : LarsonScanner.LarsonScanner(LarsonScanner.LarsonScanner.user_colors(name)),
     'pride.png'     : LarsonScanner.LarsonScanner(LarsonScanner.LarsonScanner.pride_colors), # pride
     'kitt.png'      : LarsonScanner.LarsonScanner(list('FF000000' for _ in range(6))), # red
-    'goliath.png'   : LarsonScanner.LarsonScanner(list('00FF0000' for _ in range(6))), # green
-    'blue.png'      : LarsonScanner.LarsonScanner(list('0000FF00' for _ in range(6))), # blue
+    'tree.png'      : LarsonScanner.LarsonScanner(list('00FF0000' for _ in range(6))), # green
+    'ohm2013.png'   : LarsonScanner.LarsonScanner(list('0000FF00' for _ in range(6))), # blue
     'karr.png'      : LarsonScanner.LarsonScanner(list('FFFF0000' for _ in range(6))), # yellow
-    'white.png'     : LarsonScanner.LarsonScanner(list('FFFFFFFF' for _ in range(6))), # white
+    'gunter.png'    : LarsonScanner.LarsonScanner(list('000000FF' for _ in range(6))), # white
     'police.png'    : PoliceScanner.PoliceScanner()}   # police lights
 
 color_images = list(color_maps.keys())
