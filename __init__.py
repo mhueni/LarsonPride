@@ -101,13 +101,14 @@ def noop(pressed):
 
 
 # colors as RGB in hex
-color_maps = (
-    LarsonScanner.LarsonScanner.user_colors(name),
-    LarsonScanner.LarsonScanner.pride_colors,
-    list('FF0000' for _ in range(6)), # red
-    list('00FF00' for _ in range(6)), # green
+color_maps = {
+    '/lib/sha2017_colors/shrug.png' : LarsonScanner.LarsonScanner.user_colors(name),
+    '/lib/sha2017_colors/shrug.png' : LarsonScanner.LarsonScanner.pride_colors,
+    'resources/kitt.png' : list('FF0000' for _ in range(6)), # red
+    'resources/goliath.png' : list('00FF00' for _ in range(6)), # green
     list('0000FF' for _ in range(6)), # blue
-    ['FF0000', 'DD0011', '990022', '220099', '1100DD', '0000FF'])   # police lights
+    'resources/karr.png' : list('FFFF00' for _ in range(6)), # yellow
+    ['FF0000', 'DD0011', '990022', '220099', '1100DD', '0000FF']}   # police lights
 
 badge.init()
 badge.leds_init()
