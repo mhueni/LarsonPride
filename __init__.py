@@ -71,17 +71,17 @@ def dec_brightness(pressed):
 def larson_mode_next(pressed):
     global current_color_map
     if pressed:
-        current_color_map = (settings_get_color_map() + 1) % len(color_maps)
+        current_color_map = (current_color_map + 1) % len(color_maps)
+        scanner.colors = color_maps[current_color_map]
         settings_set_color_map(current_color_map)
-        scanner.colors = color_maps[settings_get_color_map()]
 
 
 def larson_mode_prev(pressed):
     global current_color_map
     if pressed:
-        current_color_map = (settings_get_color_map() - 1 + len(color_maps)) % len(color_maps)
+        current_color_map = (current_color_map - 1 + len(color_maps)) % len(color_maps)
+        scanner.colors = color_maps[current_color_map]
         settings_set_color_map(current_color_map)
-        scanner.colors = color_maps[settings_get_color_map()]
 
 
 def inc_decay(pressed):
@@ -104,10 +104,10 @@ def noop(pressed):
 color_maps = (
     LarsonScanner.LarsonScanner.user_colors(name),
     LarsonScanner.LarsonScanner.pride_colors,
-    list('FF0000' for _ in range(6)), #red
-    list('00FF00' for _ in range(6)), #green,
-    list('0000FF' for _ in range(6))
-    )
+    list('FF0000' for _ in range(6)), # red
+    list('00FF00' for _ in range(6)), # green
+    list('0000FF' for _ in range(6)), # blue
+    ['00FF00', '00CC33', '009955', '005599', '0033CC', '0000FF'])   # police lights
 
 badge.init()
 badge.leds_init()
@@ -143,7 +143,8 @@ except:
 ugfx.flush()
 
 scanner = LarsonScanner.LarsonScanner()
-scanner.colors = color_maps[settings_get_color_map()]
+current_color_map = settings_get_color_map()
+scanner.colors = color_maps[current_color_map]
 scanner.decay = settings_get_decay()
 scanner.brightness = settings_get_brightness()
 
