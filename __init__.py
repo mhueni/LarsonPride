@@ -72,7 +72,10 @@ def larson_mode_next(pressed):
     global current_color_map
     if pressed:
         current_color_map = (current_color_map + 1) % len(color_maps)
-        scanner.colors = color_maps[current_color_map]
+        color_image = color_images[current_color_map]
+        badge.eink_png(0, 0, color_image)
+        ugfx.flush()
+        scanner.colors = color_maps[color_image]
         settings_set_color_map(current_color_map)
 
 
@@ -80,7 +83,10 @@ def larson_mode_prev(pressed):
     global current_color_map
     if pressed:
         current_color_map = (current_color_map - 1 + len(color_maps)) % len(color_maps)
-        scanner.colors = color_maps[current_color_map]
+        color_image = color_images[current_color_map]
+        badge.eink_png(0, 0, color_image)
+        ugfx.flush()
+        scanner.colors = color_maps[color_image]
         settings_set_color_map(current_color_map)
 
 
@@ -104,11 +110,13 @@ def noop(pressed):
 color_maps = {
     '/lib/sha2017_colors/shrug.png' : LarsonScanner.LarsonScanner.user_colors(name),
     '/lib/sha2017_colors/shrug.png' : LarsonScanner.LarsonScanner.pride_colors,
-    'resources/kitt.png' : list('FF0000' for _ in range(6)), # red
-    'resources/goliath.png' : list('00FF00' for _ in range(6)), # green
-    list('0000FF' for _ in range(6)), # blue
-    'resources/karr.png' : list('FFFF00' for _ in range(6)), # yellow
-    ['FF0000', 'DD0011', '990022', '220099', '1100DD', '0000FF']}   # police lights
+    'resources/kitt.png'            : list('FF0000' for _ in range(6)), # red
+    'resources/goliath.png'         : list('00FF00' for _ in range(6)), # green
+    '/lib/sha2017_colors/shrug.png' : list('0000FF' for _ in range(6)), # blue
+    'resources/karr.png'            : list('FFFF00' for _ in range(6)), # yellow
+    '/lib/sha2017_colors/shrug.png' : ['FF0000', 'DD0011', '990022', '220099', '1100DD', '0000FF']}   # police lights
+
+color_images = list(color_maps.keys())
 
 badge.init()
 badge.leds_init()
@@ -145,7 +153,7 @@ ugfx.flush()
 
 scanner = LarsonScanner.LarsonScanner()
 current_color_map = settings_get_color_map()
-scanner.colors = color_maps[current_color_map]
+scanner.colors = color_maps[color_images[current_color_map]]
 scanner.decay = settings_get_decay()
 scanner.brightness = settings_get_brightness()
 
