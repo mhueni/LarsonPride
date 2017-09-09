@@ -128,8 +128,9 @@ def noop(pressed):
 
 # colors as RGB in hex
 color_maps = {
-    'sha2017.png'     : LarsonScanner.LarsonScanner(LarsonScanner.LarsonScanner.user_colors(name)),
+    'sha2017.png'   : LarsonScanner.LarsonScanner(LarsonScanner.LarsonScanner.user_colors(name)),
     'pride.png'     : LarsonScanner.LarsonScanner(LarsonScanner.LarsonScanner.pride_colors), # pride
+    'mfzh17.png'    : LarsonScanner.LarsonScanner(('EC1C2400','009EE000','FFFFFF00','EC1C2400','009EE000','FFFFFF00')),
     'kitt.png'      : LarsonScanner.LarsonScanner(list('FF000000' for _ in range(6))), # red
     'tree.png'      : LarsonScanner.LarsonScanner(list('00FF0000' for _ in range(6))), # green
     'ohm2013.png'   : LarsonScanner.LarsonScanner(list('0000FF00' for _ in range(6))), # blue
